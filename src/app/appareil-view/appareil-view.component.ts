@@ -40,4 +40,12 @@ export class AppareilViewComponent implements OnInit, OnDestroy {
     this.appareilSubscription.unsubscribe();
   }
 
+  onSaveAppareils(): void {
+    this.appareilService.saveAppareilsToServer();
+  }
+
+  onFetch(){
+    this.appareilService.getAppareilsFromServer();
+  }
+
 }

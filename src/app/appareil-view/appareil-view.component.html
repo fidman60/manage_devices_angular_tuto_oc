@@ -11,9 +11,13 @@
         </app-appareil>
     </ul>
     <div>
-        <button class="btn btn-success" style="margin-right: 4px"
+        <button class="btn btn-success"
                 (click)="onAllumer()">Tout allumer</button>
-        <button class="btn btn-danger"
+        <button class="btn btn-danger" style="margin: 0 4px"
                 (click)="onEteindre()">Tout éteindre</button>
+        <button class="btn btn-primary" style="margin-right: 4px"
+                (click)="onSaveAppareils()">Enregistrer</button>
+        <button class="btn btn-primary"
+                (click)="onFetch()">Charger</button>
     </div>
 </div>

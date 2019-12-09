@@ -1,4 +1,6 @@
 import {Subject} from "rxjs";
+import {Injectable} from "@angular/core";
+import {HttpClient} from "@angular/common/http";
 
 export interface AppareilServiceInterface {
     id: number;
@@ -6,27 +8,16 @@ export interface AppareilServiceInterface {
     status: string;
 }
 
+@Injectable()
 export default class AppareilService {
 
     appareilSubject = new Subject<AppareilServiceInterface[]>();
 
-    private appareils: Array<AppareilServiceInterface> = [
-        {
-            id: 1,
-            name: 'Computer',
-            status: 'off'
-        },
-        {
-            id: 2,
-            name: 'Mobile',
-            status: 'on'
-        },
-        {
-            id: 3,
-            name: 'Television',
-            status: 'off'
-        },
-    ];
+    private appareils: Array<AppareilServiceInterface> = [];
+
+    constructor(private httpClient: HttpClient){
+
+    }
 
     emitAppareilSubject(){
         this.appareilSubject.next([...this.appareils]);
@@ -71,5 +62,30 @@ export default class AppareilService {
         ];
 
         this.emitAppareilSubject();
+    }
+
+    saveAppareilsToServer(){
+        this.httpClient.put('https://angular-app-476fb.firebaseio.com/appareils.json', this.appareils)
+            .subscribe(
+                () => {
+                    console.log("saved !");
+                },
+                (error) => {
+                    console.log("error: "+error);
+                });
+    }
+
+    getAppareilsFromServer(){
+        this.httpClient.get<Array<any>>('https://angular-app-476fb.firebaseio.com/appareils.json')
+            .subscribe(
+                appareils => {
+                    console.log(appareils);
+                    this.appareils = appareils;
+                    this.emitAppareilSubject();
+                },
+                error => {
+                    console.log(error);
+                }
+            );
     }
 }
